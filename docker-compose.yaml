@@ -1,0 +1,33 @@
+version: '3.8'
+
+services:
+  pg_pact:
+    image: postgres
+    environment:
+      - POSTGRES_PASSWORD=pact
+      - POSTGRES_DB=pact
+      - POSTGRES_USER=pact
+    volumes:
+      - pact_postgres:/var/lib/postgres
+      - pact_postgres_data:/var/lib/postgres/data
+
+  pact_broker:
+    container_name: pact_broker
+    image: pactfoundation/pact-broker:latest
+    ports:
+      - 9292:9292
+    depends_on:
+      - pg_pact
+    environment:
+      - PACT_BROKER_PORT=9292
+      - PACT_BROKER_DATABASE_USERNAME=pact
+      - PACT_BROKER_DATABASE_PASSWORD=pact
+      - PACT_BROKER_DATABASE_HOST=pg_pact
+      - PACT_BROKER_DATABASE_NAME=pact 
+      - PACT_BROKER_ALLOW_PUBLIC_READ=true
+      - PACT_BROKER_BASIC_AUTH_USERNAME=pact
+      - PACT_BROKER_BASIC_AUTH_PASSWORD=pact
+
+volumes:
+  pact_postgres:
+  pact_postgres_data:
