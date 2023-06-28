@@ -43,7 +43,8 @@ public class CarProviderContractTest {
     @State("has cars")
     public void shouldReturnCars(){
         Mockito.when(carRepository.findAll()).thenReturn(List.of(
-                new Car(1, "Fiat", "Uno", 2006)
+                new Car(1, "Fiat", "Uno", 2006),
+                new Car(2, "Bmw", "X6", 2006)
         ));
     }
 
